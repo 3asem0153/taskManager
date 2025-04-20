@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, {
+  useState,
+  useEffect
+} from 'react'
 import './App.css'
 import Container from "./container"
 import Inputs from "./inputs"
@@ -9,13 +12,24 @@ import Edit from './edit'
 const App = () => {
 
   // inputs
-  const [tasks, setTasks] = useState([]);
-  const [inSubject, setinSubject] = useState("");
-  const [inContent, setinContent] = useState("");
-  const saveSub = (event) => { setinSubject(event.target.value) };
-  const saveContent = (event) => { setinContent(event.target.value) };
-  const [miniTaskClicked, setMiniTaskClicked] = useState(false);
-  const [edId, setEdId] = useState(undefined);
+  const [tasks,
+    setTasks] = useState([]);
+  const [inSubject,
+    setinSubject] = useState("");
+  const [inContent,
+    setinContent] = useState("");
+  const saveSub = (event) => {
+    setinSubject(event.target.value)
+  };
+  const saveContent = (event) => {
+    setinContent(event.target.value)
+  };
+  const [miniTaskClicked,
+    setMiniTaskClicked] = useState(false);
+  const [edId,
+    setEdId] = useState(undefined);
+  const [ifEmptyMsg,
+    setIfEmptyMsg] = useState("");
 
 
 
@@ -23,9 +37,12 @@ const App = () => {
 
 
   // container
-  const [show, setShow] = useState(false);
-  const [conclass, setConClass] = useState("")
+  const [show,
+    setShow] = useState(false);
+  const [conclass,
+    setConClass] = useState("")
   const showCont = () => {
+    setMiniTaskClicked(false)
     setShow(true)
     setinSubject("");
     setinContent("")
@@ -33,23 +50,27 @@ const App = () => {
   }
 
 
+  const emptyErr = ()=>inSubject ? addTask(): setIfEmptyMsg("subject is required");
+
+
   const closeAdd = () => {
     setConClass("container-closed");
     setTimeout(() => {
       setShow(false);
-    }, 50);
+    }, 500);
   }
 
   const closeEdit = () => {
     setConClass("container-closed");
     setTimeout(() => {
       setMiniTaskClicked(false);
-    }, 50);
+    }, 500);
 
 
   }
   const taskClick = (indSub, indCont, id) => {
     setMiniTaskClicked(!miniTaskClicked);
+    setShow(false)
     setinSubject(indSub);
     setinContent(indCont);
     setEdId(id)
@@ -59,7 +80,14 @@ const App = () => {
 
   const addTask = () => {
 
-    const newTask = { id: Date.now(), subject: inSubject, content: inContent, edited: false, transit: "fadeOut", time: new Date().toLocaleTimeString() }
+    const newTask = {
+      id: Date.now(),
+      subject: inSubject,
+      content: inContent,
+      edited: false,
+      transit: "fadeOut",
+      time: new Date().toLocaleTimeString()
+    }
 
     setTasks((prevTasks) => [...prevTasks, newTask]);
 
@@ -68,7 +96,9 @@ const App = () => {
     setinContent("");
     setTimeout(() => {
       setTasks((prevTasks) => prevTasks.map((task) =>
-        task.id === newTask.id ? { ...task, transit: "fadeIn" } : task
+        task.id === newTask.id ? {
+          ...task, transit: "fadeIn"
+        }: task
       )
       )
       setShow(false);
@@ -83,7 +113,9 @@ const App = () => {
     setTasks((prevTasks) => {
 
       const updated = prevTasks.filter((task) => task.id !== edId);
-      return [...updated, { id: edId, subject: inSubject, content: inContent, edited: false }]
+      return [...updated, {
+        id: edId, subject: inSubject, content: inContent, edited: false
+      }]
     });
     setinSubject("");
     setinContent("");
@@ -100,13 +132,16 @@ const App = () => {
     setinSubject("");
     setinContent("");
     setEdId(undefined)
-    setTasks((prevTasks) => prevTasks.map((task) => task.id === edId ? { ...task, transit: "fadeOut" } : task));
+    setTasks((prevTasks) => prevTasks.map((task) => task.id === edId ? {
+      ...task, transit: "fadeOut"
+    }: task));
     setTimeout(() => {
-
       setTasks((prevTasks) => {
         setMiniTaskClicked(false)
         const updated = prevTasks.filter((task) => task.id !== edId);
-        prevTasks.map((task) => task.id === edId ? { ...task, transit: "fadeOut" } : task);
+        prevTasks.map((task) => task.id === edId ? {
+          ...task, transit: "fadeOut"
+        }: task);
         return [...updated]
       })
 
@@ -117,8 +152,8 @@ const App = () => {
 
   }
 
-
-
+  const names = (...others)=> `[${others} => Donr]`
+console.log(names("osama","mohamed"))
 
 
 
@@ -126,7 +161,7 @@ const App = () => {
   return <>
 
     <button onClick={showCont}> add task </button>
-    {show ? <Container conclass={conclass} action={closeAdd} content={<Inputs addTask={addTask} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} closing={close} />} /> : null}
+    {show ? <Container conclass={conclass} action={closeAdd} content={<Inputs addTask={emptyErr} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} ifEmpty={ifEmptyMsg} />} />: null}
     <Board>{tasks.map((task) =>
       <Minitask
         key={task.id}
@@ -135,12 +170,12 @@ const App = () => {
         content={task.content}
         transit={task.transit}
         time={task.time}
-      />
+        />
 
     )}
 
     </Board>
-    {miniTaskClicked ? <Container conclass={conclass} action={closeEdit} content=<Edit editTask={editTask} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} deleteTask={dltTask} closing={close} /> /> : null}
+    {miniTaskClicked ? <Container conclass={conclass} action={closeEdit} content=<Edit editTask={editTask} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} deleteTask={dltTask} /> />: null}
   </>
 }
 export default App

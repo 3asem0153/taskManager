@@ -1,18 +1,21 @@
-input {
+body {
+  display: flex;
+  justify-content: center;
   background-color: rgb(255, 255, 255);
-  border-radius: 10px;
-  color: black;
-  min-height: 30px;
-  text-align: center;
-  margin: 0PX 0px 70px 10px;
-  border: none;
+  padding: 20px;
+  z-index: -2;
 }
 
-textarea {
-  background-color: rgb(255, 255, 255);
+button {
+  border: white solid 1px;
+  width: 125px;
+  min-height: 35px;
   border-radius: 10px;
-  color: black;
-  min-height: 300px;
-  border: none;
-  padding: 10px;
+  background-color: rgb(255, 146, 146);
+  margin: 1px auto;
 }
+
+button:hover {
+  background-color: rgb(255, 73, 88);
+
+  }
