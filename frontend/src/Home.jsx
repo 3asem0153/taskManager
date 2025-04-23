@@ -50,7 +50,7 @@ const Home = () => {
   }
 
 
-  const emptyErr = () => inSubject ? addTask() : setIfEmptyMsg("subject is required");
+  const emptyErr = () => inSubject ? addTask(): setIfEmptyMsg("subject is required");
 
 
   const closeAdd = () => {
@@ -98,7 +98,7 @@ const Home = () => {
       setTasks((prevTasks) => prevTasks.map((task) =>
         task.id === newTask.id ? {
           ...task, transit: "fadeIn"
-        } : task
+        }: task
       )
       )
       setShow(false);
@@ -134,14 +134,14 @@ const Home = () => {
     setEdId(undefined)
     setTasks((prevTasks) => prevTasks.map((task) => task.id === edId ? {
       ...task, transit: "fadeOut"
-    } : task));
+    }: task));
     setTimeout(() => {
       setTasks((prevTasks) => {
         setMiniTaskClicked(false)
         const updated = prevTasks.filter((task) => task.id !== edId);
         prevTasks.map((task) => task.id === edId ? {
           ...task, transit: "fadeOut"
-        } : task);
+        }: task);
         return [...updated]
       })
 
@@ -161,7 +161,7 @@ const Home = () => {
   return <>
 
     <button onClick={showCont}> add task </button>
-    {show ? <Container conclass={conclass} action={closeAdd} content={<Inputs addTask={emptyErr} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} ifEmpty={ifEmptyMsg} />} /> : null}
+    {show ? <Container closec="closeButton" conclass={conclass} action={closeAdd} content={<Inputs addTask={emptyErr} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} ifEmpty={ifEmptyMsg} />} />: null}
     <Board>{tasks.map((task) =>
       <Minitask
         key={task.id}
@@ -170,12 +170,12 @@ const Home = () => {
         content={task.content}
         transit={task.transit}
         time={task.time}
-      />
+        />
 
     )}
 
     </Board>
-    {miniTaskClicked ? <Container conclass={conclass} action={closeEdit} content=<Edit editTask={editTask} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} deleteTask={dltTask} /> /> : null}
+    {miniTaskClicked ? <Container closec="closeButton" conclass={conclass} action={closeEdit} content=<Edit editTask={editTask} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} deleteTask={dltTask} /> />: null}
   </>
 }
 export default Home

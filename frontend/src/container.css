@@ -37,7 +37,7 @@
 }
 
 
-  @keyframes grow {
+@keyframes grow {
   from {
     height: 0;
     width: 0;
@@ -53,16 +53,16 @@
   }
 }
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
   @keyframes grow {
     from {
       height: 0;
       width: 0;
       background-color: rgb(255, 228, 196, 0);
 
-  }
+    }
 
-  to {
+    to {
       height: 350px;
       width: 250px;
       background-color: bisque;
@@ -70,7 +70,7 @@
     }
   }
 }
-  @keyframes shrink {
+@keyframes shrink {
   from {
     height: 70%;
     width: 25%;
@@ -81,13 +81,13 @@
     height: 0%;
     width: 0%;
     background-color: rgb(252, 247, 247);
-  opacity: 0;
+    opacity: 0;
     pointer-events: none;
 
   }
 }
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
   @keyframes shrink {
     from {
       height: 350px;
@@ -99,7 +99,7 @@
       height: 0%;
       width: 0%;
       background-color: rgb(252, 247, 247);
-  opacity: 0;
+      opacity: 0;
       pointer-events: none;
 
     }
@@ -109,16 +109,13 @@
 
 .closeButton {
   background-color: rgb(255, 255, 255, 0);
-  max-width: 25px;
-  min-height: 25px;
+  max-width: 5px;
+  max-height: 5px;
   margin: 0;
-}
-
-
-.closec {
   grid-area: closeButton;
-
 }
+
+
 
 .delete {
   border-radius: 50%;
@@ -129,9 +126,9 @@
 
 .delete:hover {
   background-color: rgb(97, 97, 97);
-  }
+}
 
-  input {
+input {
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
   color: black;
@@ -153,11 +150,11 @@ textarea {
   grid-area: content;
 }
 
-  @media (max-width:768px) {
+@media (max-width:768px) {
   textarea {
     resize: none;
     background-color: rgb(255, 255, 255);
-  border-radius: 10px;
+    border-radius: 10px;
     color: black;
     min-height: 200px;
     max-height: 250px;
@@ -180,10 +177,15 @@ textarea {
 .grbuttons:hover {
   background-color: rgb(255, 73, 88);
 
-  }
-  .errMsg{
-     color: red;
-     font-size:10px;
-     border: solid red 2px;
-     position: absolute;
+}
+.errMsg {
+  color: red;
+  font-size: 10px;
+  border: solid red 2px;
+  position: absolute;
+}
+
+.hidden {
+  visibility: hidden;
+  pointer-events: none;
 }

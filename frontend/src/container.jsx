@@ -4,11 +4,13 @@ import React, {
 import "./container.css"
 
 const Container = ({
-  conclass, content, action
+  conclass, content, action, closec
 }) => {
+
   return <div className={conclass}>
-    <div className="closec">
-      <button onClick={action} className="closeButton">x</button>
+
+    <div className="closeButton">
+      <button className={closec} onClick={action}>x</button>
     </div>
     {content}
 

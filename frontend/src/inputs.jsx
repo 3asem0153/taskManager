@@ -12,6 +12,9 @@ const Inputs = ({
 
 
   return <>
+    
+       
+
     <input type="text" placeholder="task subject" onChange={saveSub} value={subject} />
   <textarea placeholder="What are you up to?" onChange={saveContent} value={content} />
 

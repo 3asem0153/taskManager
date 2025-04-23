@@ -1,9 +1,10 @@
 import React from "react";
+import Container from "./container"
+const SignUp = ()=> {
 
-const SignUp=()=>{
-    return <>
-<form>Form</form>
-    </>
+  return <>
+    <Container closec="hidden" conclass="container" action={()=>{}} content="hi" />
+  </>
 }
 
 export default SignUp;
