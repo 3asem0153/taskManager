@@ -10,11 +10,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.post("/home", (req, res) => {
-    insert.get(req.body.email, req.body.password)
+app.post("/sign-up", (req, res) => {
+  insert.get(req.body.email, req.body.password);
+  res.send(db)
 
 })
 
 app.listen(port, () => {
-    console.log(`server running in http://localhost:${port}`)
+  console.log(`server running in http://localhost:${port}`)
 })
