@@ -1,15 +1,17 @@
 import React from 'react';
-import {BrowserRouter,Routes,Route} from "react-router-dom"
-import SignUp from "./SignUp"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import SignIn from "./SignIn"
 import Home from './Home';
+import SignUp from "./SignUp"
 
-  const App = () => {
-    return<BrowserRouter>
+const App = () => {
+  return <BrowserRouter>
     <Routes>
-    <Route path='/' element={<SignUp />} />
-    <Route path='/home' element={<Home />} />
+      <Route path='/' element={<SignIn />} />
+      <Route path='/home' element={<Home />} />
+      <Route path='/sign-up' element={<SignUp />} />
     </Routes>
-    </BrowserRouter>
+  </BrowserRouter>
 }
 
-    export default App
+export default App
