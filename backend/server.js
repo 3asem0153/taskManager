@@ -13,15 +13,20 @@ const addTask = db.prepare("INSERT INTO tasks (sub,cont) VALUES (?,?)");
 
 app.post("/sign-up/", (req, res) => {
   const info = addUser.run(req.body.email, req.body.password);
-  res.status(201).json({ message: "user added successfully", id: info.lastInsertRowid })
+  res.status(201).json({
+    message: "user added successfully", id: info.lastInsertRowid
+  })
 })
 
-app.get("/", (req, res) => {
-
-  const data = db.prepare("SELECT * FROM users").all();
-  res.send(data)
+app.post("/home:id", (req, res)=> {
+  req.body.id = req.params.id;
+  res.status(201).json({
+    message: "task added successfully to database"
+  })
 })
 
+
+app.get("/home:id",(req,res))
 app.listen(port, () => {
   console.log(`server running in http://localhost:${port}`)
 })
