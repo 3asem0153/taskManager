@@ -9,6 +9,7 @@ app.use(express.json());
 
 const addUser = db.prepare("INSERT INTO users (email,password) VALUES (?,?)");
 const addTask = db.prepare("INSERT INTO tasks (id,sub,cont) VALUES (?,?,?)");
+const getTasks = db.prepare("SELECT * FROM tasks WHERE id = ?")
 
 
 app.post("/sign-up/", (req, res) => {
@@ -26,9 +27,11 @@ app.post("/home/:id", (req, res) => {
 })
 
 
-app.get("/", (req, res) => {
-  const info = db.prepare("SELECT * FROM tasks").all()
-  res.send(info)
+app.get("/home/:id", (req, res) => {
+  const tasks = getTasks.all(req.params.id)
+  res.json({
+    data: tasks
+  })
 })
 
 
