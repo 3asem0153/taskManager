@@ -1,7 +1,5 @@
-import React, {
-  useState,
-  useEffect
-} from 'react'
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import './Home.css'
 import Container from "./container"
 import Inputs from "./inputs"
@@ -11,19 +9,16 @@ import Edit from './edit'
 
 const Home = () => {
 
-  // inputs
+  const { id } = useParams();
   const [tasks,
     setTasks] = useState([]);
   const [inSubject,
     setinSubject] = useState("");
   const [inContent,
     setinContent] = useState("");
-  const saveSub = (event) => {
-    setinSubject(event.target.value)
-  };
-  const saveContent = (event) => {
-    setinContent(event.target.value)
-  };
+
+
+
   const [miniTaskClicked,
     setMiniTaskClicked] = useState(false);
   const [edId,
@@ -41,6 +36,40 @@ const Home = () => {
     setShow] = useState(false);
   const [conclass,
     setConClass] = useState("")
+
+  const [taskFormData, setTaskFormData] = useState({
+    id: id,
+    sub: "",
+    cont: "",
+  })
+
+
+
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch(`http://localhost:4000/home/${id}`, {
+      method: "post",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(taskFormData)
+    }).then(res => res.json()).then(data => console.log(data))
+  }
+
+  const saveSub = (event) => {
+    setinSubject(event.target.value);
+
+    setTaskFormData((prev) => ({ ...prev, [event.target.name]: event.target.value }))
+
+
+
+  };
+  const saveContent = (event) => {
+    setinContent(event.target.value);
+    setTaskFormData((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+  }
+
+
   const showCont = () => {
     setMiniTaskClicked(false)
     setShow(true)
@@ -152,16 +181,13 @@ const Home = () => {
 
   }
 
-  const names = (...others) => `[${others} => Donr]`
-  console.log(names("osama", "mohamed"))
-
 
 
 
   return <>
 
     <button onClick={showCont}> add task </button>
-    {show ? <Container closec="closeButton" conclass={conclass} action={closeAdd} content={<Inputs addTask={emptyErr} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} ifEmpty={ifEmptyMsg} />} /> : null}
+    {show ? <Container closec="closeButton" conclass={conclass} action={closeAdd} content={<Inputs addTask={emptyErr} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} onSubmit={handleSubmit} ifEmpty={ifEmptyMsg} />} /> : null}
     <Board>{tasks.map((task) =>
       <Minitask
         key={task.id}
@@ -177,5 +203,6 @@ const Home = () => {
     </Board>
     {miniTaskClicked ? <Container closec="closeButton" conclass={conclass} action={closeEdit} content=<Edit editTask={editTask} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} deleteTask={dltTask} /> /> : null}
   </>
+
 }
-export default Home
+export default Home;

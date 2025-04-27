@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 const addUser = db.prepare("INSERT INTO users (email,password) VALUES (?,?)");
-const addTask = db.prepare("INSERT INTO tasks (sub,cont) VALUES (?,?)");
+const addTask = db.prepare("INSERT INTO tasks (id,sub,cont) VALUES (?,?,?)");
 
 
 app.post("/sign-up/", (req, res) => {
@@ -18,15 +18,22 @@ app.post("/sign-up/", (req, res) => {
   })
 })
 
-app.post("/home:id", (req, res)=> {
-  req.body.id = req.params.id;
+app.post("/home/:id", (req, res) => {
+  const info = addTask.run(req.body.id, req.body.sub, req.body.cont)
   res.status(201).json({
-    message: "task added successfully to database"
+    message: "task added successfully to database", data, info
   })
 })
 
 
-app.get("/home:id",(req,res))
+app.get("/", (req, res) => {
+  const info = db.prepare("SELECT * FROM tasks").all()
+  res.send(info)
+})
+
+
+
+
 app.listen(port, () => {
   console.log(`server running in http://localhost:${port}`)
 })
