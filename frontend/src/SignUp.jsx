@@ -36,10 +36,10 @@ const SignUp = () => {
                     },
                     body: JSON.stringify(formData)
                 }
-            ).then(res => res.json()).then((data) => {
+            ).then(res => res.json()).then((data)=>{
                 console.log("data from server:", data);
                 navigate(`/home/${data.id}`)
-            }).catch(Error => console.log(`Error : ${Error}`));
+            }).catch(Error=>console.log(`Error : can't fetch submit${Error}`));
 
         }
         else (alert("you better match it! BITCH"))

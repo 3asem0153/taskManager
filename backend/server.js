@@ -20,9 +20,10 @@ app.post("/sign-up/", (req, res) => {
 })
 
 app.post("/home/:id", (req, res) => {
-  const info = addTask.run(req.body.id, req.body.sub, req.body.cont)
+  addTask.run(req.body.id, req.body.sub, req.body.cont);
+  const data = getTasks.all(req.body.id)
   res.status(201).json({
-    message: "task added successfully to database", data, info
+    message: "task added successfully to database", tasks:data
   })
 })
 
