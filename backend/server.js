@@ -21,9 +21,9 @@ app.post("/sign-up/", (req, res) => {
 
 app.post("/home/:id", (req, res) => {
   addTask.run(req.body.id, req.body.sub, req.body.cont);
-  const data = getTasks.all(req.body.id)
+  const tasks = getTasks.all(req.body.id)
   res.status(201).json({
-    message: "task added successfully to database", tasks:data
+    message: "task added successfully to database", tasks:tasks
   })
 })
 
@@ -31,7 +31,7 @@ app.post("/home/:id", (req, res) => {
 app.get("/home/:id", (req, res) => {
   const tasks = getTasks.all(req.params.id)
   res.json({
-    data: tasks
+    tasks:tasks
   })
 })
 

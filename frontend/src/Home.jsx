@@ -35,7 +35,7 @@
       setIfEmptyMsg] = useState("");
 
     const [miniTaskData,
-      setMiniTaskData] = useState( {});
+      setMiniTaskData] = useState();
 
 
 
@@ -53,15 +53,19 @@
         cont: "",
       })
 
-
+useEffect(()=>{
     fetch(`http://localhost:4000/home/${id}`, {
-      headers: {
-        "content-type": "application/json"
+     headers: {
+     "content-type": "application/json"
       }
-    }).then((res) =>res.json()).then((data)=>setMiniTaskData(data.data));
+  }).then((res) =>res.json()).then((data)=>{
+    console.log(data.tasks);
+  setMiniTaskData(data.tasks)}).catch((Error)=>console.log(`Error:${Error}`))},[])
 
 
-      const handleSubmit = (e) => {
+
+
+      const  handleSubmit = (e) => {
         e.preventDefault();
         fetch(`http://localhost:4000/home/${id}`, {
           method: "post",
@@ -69,7 +73,14 @@
             "content-type": "application/json"
           },
           body: JSON.stringify(taskFormData)
-        }).then(res => res.json()).then(data => console.log(data))
+        }).then(res => res.json()).then(data => console.log(data));
+          return fetch(`http://localhost:4000/home/${id}`, {
+           headers: {
+           "content-type": "application/json"
+            }
+        }).then((res) =>res.json()).then((data)=>{
+          console.log(data.tasks);
+        setMiniTaskData(data.tasks)}).catch((Error)=>console.log(`Error:${Error}`))
       }
 
       const saveSub = (event) => {
@@ -218,7 +229,7 @@
             time={task.time}
             />
 
-        ):""}
+        ):null}
 
         </Board>
         {miniTaskClicked ? <Container closec="closeButton" conclass={conclass} action={closeEdit} content=<Edit editTask={editTask} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} deleteTask={dltTask} /> />: null}
