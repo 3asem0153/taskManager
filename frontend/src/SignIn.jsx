@@ -1,23 +1,43 @@
-import React from "react";
-import Container from "./container"
-const SignIn = () => {
+import React,{useState} from "react";
+import Container from "./container";
+import { useNavigate } from "react-router-dom";
 
-  const handleLogIn = (e) => {
+const SignIn = () => {
+const navigate = useNavigate()
+  const [formData,setFormData]=useState({
+    email:"",
+    password:""
+  })
+  const handleChange = (e)=>{
+    setFormData((prev)=>({
+      ...prev, [e.target.name]:e.target.value
+    }))
+  }
+  const handleLogIn = async (e) => {
     e.preventDefault();
-    fetch("http://localhost:4000/sign-up",)
+    const res = await fetch("http://localhost:4000/",{
+      method:"post",
+      headers:{
+        "content-type":"application/json"},
+      body:JSON.stringify(formData)
+    });
+    const data = await res.json();
+    if (res.ok){
+  navigate(`/home/${data.id}`)
+    }
   }
 
 
-  const form = <form>
+  const form = <form onSubmit={handleLogIn}>
     <h2>Sign in </h2>
     <label>
       Email address :
-      <input />
+      <input name="email" value={formData.email} onChange={handleChange}/>
     </label>
     <br />
-    <label>
+    <label >
       Password:
-      <input />
+      <input name="password" value={formData.password} onChange={handleChange}/>
     </label>
     <button type="submit">Submit</button>
     <h5>don't have an account?  <a href="./sign-up">create account</a></h5>

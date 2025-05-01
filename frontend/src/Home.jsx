@@ -60,28 +60,27 @@ useEffect(()=>{
       }
   }).then((res) =>res.json()).then((data)=>{
     console.log(data.tasks);
-  setMiniTaskData(data.tasks)}).catch((Error)=>console.log(`Error:${Error}`))},[])
+  setMiniTaskData(data.tasks)}).catch((Error)=>console.log(`Error:${Error}`))},[id])
 
 
 
 
-      const  handleSubmit = (e) => {
+      const  handleSubmit = async (e) => {
         e.preventDefault();
-        fetch(`http://localhost:4000/home/${id}`, {
+       try {
+        const postRes = await fetch(`http://localhost:4000/home/${id}`, {
           method: "post",
           headers: {
             "content-type": "application/json"
           },
           body: JSON.stringify(taskFormData)
-        }).then(res => res.json()).then(data => console.log(data));
-          return fetch(`http://localhost:4000/home/${id}`, {
-           headers: {
-           "content-type": "application/json"
-            }
-        }).then((res) =>res.json()).then((data)=>{
+        });
+
+        if (!postRes.ok) throw new Error("failed to add Task");
+        const data = await postRes.json();
           console.log(data.tasks);
-        setMiniTaskData(data.tasks)}).catch((Error)=>console.log(`Error:${Error}`))
-      }
+        setMiniTaskData(data.tasks)}
+        catch (err){console.log(`Error:${err}`)}}
 
       const saveSub = (event) => {
         setinSubject(event.target.value);
@@ -222,9 +221,9 @@ useEffect(()=>{
         <Board>{miniTaskData ? miniTaskData.map((task) =>
           <Minitask
             key={task.id}
-            click={() => taskClick(task.subject, task.content, task.id)}
-            subject={task.subject}
-            content={task.content}
+            click={() => taskClick(task.sub, task.cont, task.id)}
+            subject={task.sub}
+            content={task.cont}
             transit={task.transit}
             time={task.time}
             />
