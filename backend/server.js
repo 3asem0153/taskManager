@@ -10,7 +10,7 @@ app.use(express.json());
 const addUser = db.prepare("INSERT INTO users (email,password) VALUES (?,?)");
 const addTask = db.prepare("INSERT INTO tasks (id,inid,sub,cont) VALUES (?,?,?,?)");
 const getTasks = db.prepare("SELECT * FROM tasks WHERE id = ?");
-const editTask = db.prepare("UPDATE tasks SET sub = ? AND cont = ? WHERE inid = ? ")
+const editTask = db.prepare("UPDATE tasks SET sub = ? , cont = ? WHERE inid = ? ");
 const getUser = db.prepare("SELECT id FROM users WHERE email = ? AND password=?")
 
 
