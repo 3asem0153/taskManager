@@ -8,8 +8,9 @@ app.use(cors());
 app.use(express.json());
 
 const addUser = db.prepare("INSERT INTO users (email,password) VALUES (?,?)");
-const addTask = db.prepare("INSERT INTO tasks (id,sub,cont) VALUES (?,?,?)");
-const getTasks = db.prepare("SELECT * FROM tasks WHERE id = ?")
+const addTask = db.prepare("INSERT INTO tasks (id,inid,sub,cont) VALUES (?,?,?,?)");
+const getTasks = db.prepare("SELECT * FROM tasks WHERE id = ?");
+const editTask = db.prepare("UPDATE tasks SET sub = ? AND cont = ? WHERE inid = ? ")
 const getUser = db.prepare("SELECT id FROM users WHERE email = ? AND password=?")
 
 
@@ -21,7 +22,7 @@ app.post("/sign-up/", (req, res) => {
 })
 
 app.post("/home/:id", (req, res) => {
-  addTask.run(req.body.id, req.body.sub, req.body.cont);
+  addTask.run(req.body.id,req.body.inid, req.body.sub, req.body.cont);
   const tasks = getTasks.all(req.body.id)
   res.status(201).json({
     message: "task added successfully to database", tasks:tasks
@@ -42,9 +43,23 @@ app.post("/", (req, res) => {
   })
 
 
+  app.patch("/home/:id", (req, res) => {
+    const update = editTask.run(req.body.sub , req.body.cont,req.body.inid);
+    res.json({
+      task:update
+    })
+  })
+
 
 
 
 app.listen(port, () => {
   console.log(`server running in http://localhost:${port}`)
+})
+
+app.get("/home/:id", (req, res) => {
+  const tasks = getTasks.all(req.params.id)
+  res.send(
+    tasks
+  )
 })

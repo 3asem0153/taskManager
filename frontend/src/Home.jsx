@@ -18,8 +18,7 @@
       id
     } = useParams();
 
-    const [tasks,
-      setTasks] = useState([]);
+
     const [inSubject,
       setinSubject] = useState("");
     const [inContent,
@@ -49,6 +48,7 @@
     const [taskFormData,
       setTaskFormData] = useState( {
         id: id,
+        inid:"",
         sub: "",
         cont: "",
       })
@@ -67,6 +67,7 @@ useEffect(()=>{
 
       const  handleSubmit = async (e) => {
         e.preventDefault();
+        setTaskFormData((prev)=>({...prev,inid:Date.now()}))
        try {
         const postRes = await fetch(`http://localhost:4000/home/${id}`, {
           method: "post",
@@ -148,18 +149,13 @@ useEffect(()=>{
           time: new Date().toLocaleTimeString()
         }
 
-        setTasks((prevTasks) => [...prevTasks, newTask]);
+       
 
         setConClass("container-closed")
         setinSubject("");
         setinContent("");
         setTimeout(() => {
-          setTasks((prevTasks) => prevTasks.map((task) =>
-            task.id === newTask.id ? {
-              ...task, transit: "fadeIn"
-            }: task
-          )
-          )
+         
           setShow(false);
         }, 500);
 
@@ -167,49 +163,64 @@ useEffect(()=>{
 
       }
 
-
-      const editTask = () => {
-        setTasks((prevTasks) => {
-
-          const updated = prevTasks.filter((task) => task.id !== edId);
-          return [...updated, {
-            id: edId, subject: inSubject, content: inContent, edited: false
-          }]
+const [editFormData,setEditFormData]=useState({
+  sub:inSubject,
+  cont:inContent,
+  inid:edId
+});
+      const editTask = async () => {  
+        try{
+          const res = await fetch(`http://localhost:4000/home/${id}`,{
+          method:"patch",
+          headers:{
+            "content-type":"application/json"},
+          body:JSON.stringify(editFormData)
         });
-        setinSubject("");
-        setinContent("");
-        setEdId(undefined)
-        setConClass("container-closed")
-        setTimeout(() => {
-          setMiniTaskClicked(false)
-        }, 500);
+        const data = await res.json();
+        console.log(data)}
+catch(err){console.log(err)}}
+      
+        // setTasks((prevTasks) => {
 
-      }
-      const dltTask = () => {
+        //   const updated = prevTasks.filter((task) => task.id !== edId);
+        //   return [...updated, {
+        //     id: edId, subject: inSubject, content: inContent, edited: false
+        //   }]
+        // });
+        // setinSubject("");
+        // setinContent("");
+        // setEdId(undefined)
+        // setConClass("container-closed")
+        // setTimeout(() => {
+        //   setMiniTaskClicked(false)
+        // }, 500);
 
-        setConClass("container-closed");
-        setinSubject("");
-        setinContent("");
-        setEdId(undefined)
-        setTasks((prevTasks) => prevTasks.map((task) => task.id === edId ? {
-          ...task, transit: "fadeOut"
-        }: task));
-        setTimeout(() => {
-          setTasks((prevTasks) => {
-            setMiniTaskClicked(false)
-            const updated = prevTasks.filter((task) => task.id !== edId);
-            prevTasks.map((task) => task.id === edId ? {
-              ...task, transit: "fadeOut"
-            }: task);
-            return [...updated]
-          })
+      
+      // const dltTask = () => {
+
+      //   setConClass("container-closed");
+      //   setinSubject("");
+      //   setinContent("");
+      //   setEdId(undefined)
+      //   setTasks((prevTasks) => prevTasks.map((task) => task.id === edId ? {
+      //     ...task, transit: "fadeOut"
+      //   }: task));
+      //   setTimeout(() => {
+      //     setTasks((prevTasks) => {
+      //       setMiniTaskClicked(false)
+      //       const updated = prevTasks.filter((task) => task.id !== edId);
+      //       prevTasks.map((task) => task.id === edId ? {
+      //         ...task, transit: "fadeOut"
+      //       }: task);
+      //       return [...updated]
+      //     })
 
 
-        }, 400);
+      //   }, 400);
 
 
 
-      }
+      // }
 
 
 
@@ -220,8 +231,8 @@ useEffect(()=>{
         {show ? <Container closec="closeButton" conclass={conclass} action={closeAdd} content={<Inputs addTask={emptyErr} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} onSubmit={handleSubmit} ifEmpty={ifEmptyMsg} />} />: null}
         <Board>{miniTaskData ? miniTaskData.map((task) =>
           <Minitask
-            key={task.id}
-            click={() => taskClick(task.sub, task.cont, task.id)}
+            key={task.inid}
+            click={() => taskClick(task.sub, task.cont, task.inid)}
             subject={task.sub}
             content={task.cont}
             transit={task.transit}
@@ -231,7 +242,7 @@ useEffect(()=>{
         ):null}
 
         </Board>
-        {miniTaskClicked ? <Container closec="closeButton" conclass={conclass} action={closeEdit} content=<Edit editTask={editTask} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} deleteTask={dltTask} /> />: null}
+        {miniTaskClicked ? <Container closec="closeButton" conclass={conclass} action={closeEdit} content=<Edit editTask={editTask} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} deleteTask={()=>{}} /> />: null}
       </>
 
     }
