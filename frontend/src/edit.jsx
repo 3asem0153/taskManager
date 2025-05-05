@@ -12,7 +12,7 @@ const Edit = ({
 
 
   return <>
-<form >
+<form>
     <input type="text" placeholder="task subject" onChange={saveSub} value={subject} />
   <textarea placeholder="What are you up to?" onChange={saveContent} value={content} />
 

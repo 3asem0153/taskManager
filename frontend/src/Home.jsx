@@ -3,7 +3,6 @@ import React, {
   useEffect
 } from 'react';
 import {
-  data,
   useParams
 } from 'react-router-dom';
 import './Home.css'
@@ -172,31 +171,21 @@ const Home = () => {
 
   }
 
-  const [editFormData, setEditFormData] = useState({
-    sub: "",
-    cont: "",
-    inid: ""
-  });
 
-  useEffect(() => {
-    setEditFormData({
-      sub: inSubject,
-      cont: inContent,
-      inid: edId
-    }
-    )
-  }, [inSubject, inContent, edId])
 
   const editTask = async () => {
-
-    
+    const editedData={
+      sub:inSubject,
+      cont:inContent,
+      inid:edId
+    }
     try {
       const res = await fetch(`http://localhost:4000/home/${id}`, {
         method: "patch",
         headers: {
           "content-type": "application/json"
         },
-        body: JSON.stringify(editFormData)
+        body: JSON.stringify(editedData)
       });
       const data = await res.json();
       console.log(data)
@@ -220,31 +209,43 @@ const Home = () => {
   // }, 500);
 
 
-  // const dltTask = () => {
+  const dltTask = async () => {
+    const inid = {inid:edId};
+    const res = await fetch(`http://localhost:4000/home/${id}`,{
+      method :"delete",
+      headers :{"content-type":"application/json"} ,
+      body:JSON.stringify(inid) 
+    });
+    const data = res.json();
+    console.log(`data : ${data}`)
 
-  //   setConClass("container-closed");
-  //   setinSubject("");
-  //   setinContent("");
-  //   setEdId(undefined)
-  //   setTasks((prevTasks) => prevTasks.map((task) => task.id === edId ? {
-  //     ...task, transit: "fadeOut"
-  //   }: task));
-  //   setTimeout(() => {
-  //     setTasks((prevTasks) => {
-  //       setMiniTaskClicked(false)
-  //       const updated = prevTasks.filter((task) => task.id !== edId);
-  //       prevTasks.map((task) => task.id === edId ? {
-  //         ...task, transit: "fadeOut"
-  //       }: task);
-  //       return [...updated]
-  //     })
+    setConClass("container-closed");
+    setinSubject("");
+    setinContent("");
+    setEdId(undefined);
+    setMiniTaskClicked(false);
+    
 
 
-  //   }, 400);
+    // setTasks((prevTasks) => prevTasks.map((task) => task.id === edId ? {
+    //   ...task, transit: "fadeOut"
+    // }: task));
+    // setTimeout(() => {
+    //   setTasks((prevTasks) => {
+    //     setMiniTaskClicked(false)
+    //     const updated = prevTasks.filter((task) => task.id !== edId);
+    //     prevTasks.map((task) => task.id === edId ? {
+    //       ...task, transit: "fadeOut"
+    //     }: task);
+    //     return [...updated]
+    //   })
+
+
+    // }, 400);
 
 
 
-  // }
+  }
 
 
 
@@ -267,7 +268,7 @@ const Home = () => {
     ) : null}
 
     </Board>
-    {miniTaskClicked ? <Container closec="closeButton" conclass={conclass} action={closeEdit} content=<Edit editTask={editTask} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} deleteTask={() => { }} /> /> : null}
+    {miniTaskClicked ? <Container closec="closeButton" conclass={conclass} action={closeEdit} content={<Edit editTask={editTask} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} deleteTask={dltTask} />} /> : null}
   </>
 
 }

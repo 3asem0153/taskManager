@@ -11,8 +11,8 @@ const addUser = db.prepare("INSERT INTO users (email,password) VALUES (?,?)");
 const addTask = db.prepare("INSERT INTO tasks (id,inid,sub,cont) VALUES (?,?,?,?)");
 const getTasks = db.prepare("SELECT * FROM tasks WHERE id = ?");
 const editTask = db.prepare("UPDATE tasks SET sub = ? , cont = ? WHERE inid = ? ");
-const getUser = db.prepare("SELECT id FROM users WHERE email = ? AND password=?")
-
+const getUser = db.prepare("SELECT id FROM users WHERE email = ? AND password=?");
+const dlt = db.prepare("DELETE FROM tasks WHERE inid = ?");
 
 app.post("/sign-up/", (req, res) => {
   const info = addUser.run(req.body.email, req.body.password);
@@ -45,12 +45,22 @@ app.post("/", (req, res) => {
 
   app.patch("/home/:id", (req, res) => {
     const update = editTask.run(req.body.sub , req.body.cont,req.body.inid);
+    if (update.changes === 0){
+      res.status(404).json({message:"task not edited"})
+    }
     res.json({
-      task:update
+      message:"task updated"
     })
   })
 
-
+  app.delete("/home/:id", (req, res) => {
+    const result = dlt.run(req.body.inid);
+    if (result.changes === 0){
+      res.status(400).json({
+        message:"failed to find id"
+      })
+    }
+  })
 
 
 app.listen(port, () => {
