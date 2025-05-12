@@ -19,6 +19,7 @@ const navigate = useNavigate()
       method:"post",
       headers:{
         "content-type":"application/json"},
+        credentials:'include',
       body:JSON.stringify(formData)
     });
     const data = await res.json();

@@ -7,7 +7,10 @@ const cookieParser = require('cookie-parser');
 
 const port = 4000;
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin:"http://localhost:3000",
+  credentials:true
+}));
 app.use(express.json());
 app.use(cookieParser())
 
@@ -51,6 +54,12 @@ app.post("/sign-up/", (req, res) => {
   }
  
 
+})
+app.post('/logout',(req,res)=>{
+  res.clearCookie("jwt",{
+    httpOnly:true
+  })
+  res.status(200).json({message:"logged out successfully"})
 })
 
 const authenticateToken = (req,res,next)=>{

@@ -3,6 +3,7 @@ import React, {
   useEffect
 } from 'react';
 import {
+  useNavigate,
   useParams
 } from 'react-router-dom';
 import './Home.css'
@@ -10,10 +11,12 @@ import Container from "./container"
 import Inputs from "./inputs"
 import Board from './board'
 import Minitask from './miniTask'
-import Edit from './edit'
+import Edit from './edit';
+import LogOut from './logout';
 
 const Home = () => {
 
+  const navigate = useNavigate();
   const {
     id
   } = useParams();
@@ -56,6 +59,25 @@ const Home = () => {
       sub: "",
       cont: "",
     })
+
+    const logOut = async ()=>{
+      try{
+      const res = await fetch("http://localhost:4000/logout",{
+        method:"post",
+        headers:{
+          "content-type":"application/json"
+        },
+        credentials:'include'
+
+      });
+      if(!res.ok){throw new Error ("log out failed") }
+      const data = await res.json();
+      console.log(data);
+      navigate('/')
+    }catch(err){
+      console.log(`couldn't log out ${err}`)
+    }
+    }
 
     const [accessT,setAccessT]=useState();
     fetch('http://localhost:4000/refresh',{
@@ -283,7 +305,8 @@ const Home = () => {
 
     </Board>
     {miniTaskClicked ? <Container closec="closeButton" conclass={conclass} action={closeEdit} content={<Edit editTask={editTask} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} deleteTask={dltTask} />} /> : null}
-  </>
+  <LogOut fetch={logOut} />
+    </>
 
 }
 export default Home;
