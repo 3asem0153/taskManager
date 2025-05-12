@@ -57,9 +57,21 @@ const Home = () => {
       cont: "",
     })
 
+    const [accessT,setAccessT]=useState();
+    fetch('http://localhost:4000/refresh',{
+      method:"post",
+      headers:{
+        "content-type":"application/json"
+      },
+      credentials:'include'
+      
+
+    }).then((res)=>res.json()).then((data)=>setAccessT(data.accessToken))
+
   useEffect(() => {
     fetch(`http://localhost:4000/home/${id}`, {
       headers: {
+        "authorization":`Bearer ${accessT}`,
         "content-type": "application/json"
       }
     }).then((res) => res.json()).then((data) => {
@@ -80,6 +92,7 @@ const Home = () => {
       const postRes = await fetch(`http://localhost:4000/home/${id}`, {
         method: "post",
         headers: {
+          "authorization":`Bearer ${accessT}`,
           "content-type": "application/json"
         },
         body: JSON.stringify(addedData)
@@ -183,7 +196,8 @@ const Home = () => {
       const res = await fetch(`http://localhost:4000/home/${id}`, {
         method: "patch",
         headers: {
-          "content-type": "application/json"
+          "content-type": "application/json",
+          "authorization":`Bearer ${accessT}`
         },
         body: JSON.stringify(editedData)
       });

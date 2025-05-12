@@ -3,11 +3,13 @@ const db = require("./database");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const cookieParser = require('cookie-parser');
 
 const port = 4000;
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser())
 
 
 const addUser = db.prepare("INSERT INTO users (email,password) VALUES (?,?)");
