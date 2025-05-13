@@ -88,9 +88,12 @@ const Home = () => {
       credentials:'include'
       
 
-    }).then((res)=>res.json()).then((data)=>setAccessT(data.accessToken))
-
+    }).then((res)=>res.json()).then((data)=>{setAccessT(data.accessToken)
+      console.log(accessT);});
+    
+    
   useEffect(() => {
+   
     fetch(`http://localhost:4000/home/${id}`, {
       headers: {
         "authorization":`Bearer ${accessT}`,
@@ -100,7 +103,7 @@ const Home = () => {
       console.log(data.tasks);
       setMiniTaskData(data.tasks)
     }).catch((Error) => console.log(`Error:${Error}`))
-  }, [id])
+  },[])
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -21,36 +21,43 @@ const getTasks = db.prepare("SELECT * FROM tasks WHERE id = ?");
 const editTask = db.prepare("UPDATE tasks SET sub = ? , cont = ? WHERE inid = ? ");
 const getUser = db.prepare("SELECT id FROM users WHERE email = ? AND password=?");
 const dlt = db.prepare("DELETE FROM tasks WHERE inid = ?");
+const getUsers=db.prepare("SELECT * FROM users");
 
 
 
-app.post("/sign-up/", (req, res) => {
+
+app.post("/sign-up", (req, res) => {
   if(!req.body.email||!req.body.password){
    return res.status(400).json({
       message:"Email and password are required"
     })
   }
-  try {const info = addUser.run(req.body.email, req.body.password);
+  try {
+    const info = addUser.run(req.body.email, req.body.password);
 
-  const accessToken=jwt.sign(
-    {email:req.body.email},
-    process.env.ACCESS_TOKEN_SECRET,{expiresIn:'30s'} 
-  );
-  const refreshToken=jwt.sign(
-    {email:req.body.email},
-    process.env.REFRESH_TOKEN_SECRET,{expiresIn:'1d'} 
-  );
-  res.cookie("jwt",refreshToken,{
-    httpOnly:true,
-    maxAge:24*60*60*1000
-  })
-  res.status(201).json({
-    message: "user added successfully", id: info.lastInsertRowid,accessToken
-  })} catch(err){
+    const accessToken=jwt.sign(
+      {email:req.body.email},
+      process.env.ACCESS_TOKEN_SECRET,{expiresIn:'3s'} 
+    );
+    const refreshToken=jwt.sign(
+      {email:req.body.email},
+      process.env.REFRESH_TOKEN_SECRET,{expiresIn:'3s'} 
+    );
+
+    res.cookie("jwt",refreshToken,{
+      httpOnly:true,
+      maxAge:24*60*60*1000
+    })
+
+    res.status(201).json({
+      message: "user added successfully", id: info.lastInsertRowid,accessToken
+    })} 
+
+    catch(err){
     if (err.code==="SQLITE_CONSTRAINT"){
       return res.status(409).json({message:"email already registered"}) 
     }
-    return res.status(500).json({message:"server error"})
+    return res.status(500).json({message:"server error none of the above"})
   }
  
 
@@ -105,7 +112,7 @@ app.post("/home/:id",authenticateToken, (req, res) => {
 })
 
 
-app.get("/home/:id",authenticateToken, (req, res) => {
+app.get("/home/:id", (req, res) => {
   const tasks = getTasks.all(req.params.id)
   res.json({
     tasks:tasks
@@ -142,9 +149,9 @@ app.listen(port, () => {
   console.log(`server running in http://localhost:${port}`)
 })
 
-app.get("/home/:id", (req, res) => {
-  const tasks = getTasks.all(req.params.id)
+app.get("/", (req, res) => {
+  const users = getUsers.all()
   res.send(
-    tasks
+    users
   )
 })

@@ -25,10 +25,10 @@ const SignUp = () => {
         )
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (formData.password === confirmP) {
-            fetch("http://localhost:4000/sign-up",
+           try {const res = await fetch("http://localhost:4000/sign-up",
                 {
                     method: "post",
                     headers: {
@@ -37,12 +37,15 @@ const SignUp = () => {
                     credentials:'include',
                     body: JSON.stringify(formData)
                 }
-            ).then(res => res.json()).then((data)=>{
+                );
+                const data = await res.json();
                 console.log("data from server:", data);
                 navigate(`/home/${data.id}`)
-            }).catch(Error=>console.log(`Error : can't fetch submit${Error}`));
+            }
 
+            catch(err){console.log(`Error : can't fetch submit${err}`)};
         }
+          
         else (alert("you better match it! BITCH"))
     }
 
