@@ -37,11 +37,11 @@ app.post("/sign-up", (req, res) => {
 
     const accessToken=jwt.sign(
       {email:req.body.email},
-      process.env.ACCESS_TOKEN_SECRET,{expiresIn:'3s'} 
+      process.env.ACCESS_TOKEN_SECRET,{expiresIn:'30s'} 
     );
     const refreshToken=jwt.sign(
       {email:req.body.email},
-      process.env.REFRESH_TOKEN_SECRET,{expiresIn:'3s'} 
+      process.env.REFRESH_TOKEN_SECRET,{expiresIn:'60s'} 
     );
 
     res.cookie("jwt",refreshToken,{
@@ -120,9 +120,44 @@ app.get("/home/:id", (req, res) => {
 })
 
 app.post("/", (req, res) => {
-  const user = getUser.get(req.body.email,req.body.password);
-  res.json({id:user.id})
-  })
+
+if(!req.body.email||!req.body.password){
+   return res.status(400).json({
+      message:"Email and password are required"
+    })
+  }
+  try {
+
+    const user = getUser.get(req.body.email,req.body.password);
+
+    const accessToken=jwt.sign(
+      {email:req.body.email},
+      process.env.ACCESS_TOKEN_SECRET,{expiresIn:'30s'} 
+    );
+    const refreshToken=jwt.sign(
+      {email:req.body.email},
+      process.env.REFRESH_TOKEN_SECRET,{expiresIn:'60s'} 
+    );
+
+    res.cookie("jwt",refreshToken,{
+      httpOnly:true,
+      maxAge:24*60*60*1000
+    })
+
+    res.status(201).json({
+      message: "logged in successfully", id:user.id ,accessToken
+    })} 
+
+    catch(err){
+    return res.status(500).json({message:"server error none of the above"})
+  }
+ 
+
+})
+
+
+  
+  
 
 
   app.patch("/home/:id",authenticateToken, (req, res) => {
@@ -155,3 +190,11 @@ app.get("/", (req, res) => {
     users
   )
 })
+
+
+
+
+
+
+
+    

@@ -15,7 +15,7 @@ import Edit from './edit';
 import LogOut from './logout';
 
 const Home = () => {
-
+const [authorized,setAuthorized]=useState(false);
   const navigate = useNavigate();
   const {
     id
@@ -79,7 +79,7 @@ const Home = () => {
     }
     }
 
-    const [accessT,setAccessT]=useState();
+    const [accessT,setAccessT]=useState(null);
     fetch('http://localhost:4000/refresh',{
       method:"post",
       headers:{
@@ -93,7 +93,7 @@ const Home = () => {
     
     
   useEffect(() => {
-   
+    setAuthorized(true);
     fetch(`http://localhost:4000/home/${id}`, {
       headers: {
         "authorization":`Bearer ${accessT}`,
@@ -290,10 +290,12 @@ const Home = () => {
 
 
   return <>
-
-    <button onClick={showCont}> add task </button>
-    {show ? <Container closec="closeButton" conclass={conclass} action={closeAdd} content={<Inputs addTask={emptyErr} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} onSubmit={handleSubmit} ifEmpty={ifEmptyMsg} />} /> : null}
-    <Board>{miniTaskData ? miniTaskData.map((task) =>
+    {accessT ? 
+    <div>
+      <button onClick={showCont}> add task </button>
+      {show ? <Container closec="closeButton" conclass={conclass} action={closeAdd} content={<Inputs addTask={emptyErr} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} onSubmit={handleSubmit} ifEmpty={ifEmptyMsg} /> } /> : null}
+     
+      <Board>{miniTaskData ? miniTaskData.map((task) =>
       <Minitask
         key={task.inid}
         click={() => taskClick(task.sub, task.cont, task.inid)}
@@ -302,14 +304,15 @@ const Home = () => {
         transit={task.transit}
         time={task.time}
       />
+     ) : null}
+     </Board>
 
+      {miniTaskClicked ? <Container closec="closeButton" conclass={conclass} action={closeEdit} content={<Edit editTask={editTask} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} deleteTask={dltTask} />} /> : null}
+      <LogOut fetch={logOut} />
+  </div>
+  : <p>log in please</p>   }
 
-    ) : null}
-
-    </Board>
-    {miniTaskClicked ? <Container closec="closeButton" conclass={conclass} action={closeEdit} content={<Edit editTask={editTask} subject={inSubject} content={inContent} saveSub={saveSub} saveContent={saveContent} deleteTask={dltTask} />} /> : null}
-  <LogOut fetch={logOut} />
-    </>
+  </>
 
 }
 export default Home;
