@@ -1,0 +1,16 @@
+@refresh=f806983b1044c42b68c8303b6ac9a4d2f9a594b900990dfed171b3d56f72d5148afa6e9d54238bc8a9145ea0c88f66182d0a805e13c1cea3905284490cd7499a
+###
+POST http://localhost:4000/refresh
+Content-Type: application/json
+Cookie: refreshToken={{refresh}}
+###
+@accessT=a4ca92eef93401f71028a905a43a784f1f21c891a842cac2697934755623a136f3f5e3f4ba37a05b298dab88752f5c09a645c43231e2c88bf9d3d85c60eecdbb
+
+###
+POST http://localhost:4000/
+Content-Type: application/json
+Cookie: refreshToken={{refresh}}
+###
+PATCH  http://localhost:4000/home/1
+Authorization: Bearer {{accessT}}
+Content-Type: application/json

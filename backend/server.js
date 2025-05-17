@@ -37,11 +37,11 @@ app.post("/sign-up", (req, res) => {
 
     const accessToken=jwt.sign(
       {email:req.body.email},
-      process.env.ACCESS_TOKEN_SECRET,{expiresIn:'30s'} 
+      process.env.ACCESS_TOKEN_SECRET,{expiresIn:'30m'} 
     );
     const refreshToken=jwt.sign(
       {email:req.body.email},
-      process.env.REFRESH_TOKEN_SECRET,{expiresIn:'60s'} 
+      process.env.REFRESH_TOKEN_SECRET,{expiresIn:'6d'} 
     );
 
     res.cookie("jwt",refreshToken,{
@@ -112,7 +112,7 @@ app.post("/home/:id",authenticateToken, (req, res) => {
 })
 
 
-app.get("/home/:id", (req, res) => {
+app.get("/home/:id",authenticateToken, (req, res) => {
   const tasks = getTasks.all(req.params.id)
   res.json({
     tasks:tasks
@@ -132,14 +132,12 @@ if(!req.body.email||!req.body.password){
 
     const accessToken=jwt.sign(
       {email:req.body.email},
-      process.env.ACCESS_TOKEN_SECRET,{expiresIn:'30s'} 
+      process.env.ACCESS_TOKEN_SECRET,{expiresIn:'30m'} 
     );
     const refreshToken=jwt.sign(
       {email:req.body.email},
-      process.env.REFRESH_TOKEN_SECRET,{expiresIn:'60s'} 
-    );
-
-    res.cookie("jwt",refreshToken,{
+      process.env.REFRESH_TOKEN_SECRET,{expiresIn:'6d'} 
+    );res.cookie("jwt",refreshToken,{
       httpOnly:true,
       maxAge:24*60*60*1000
     })
@@ -163,10 +161,11 @@ if(!req.body.email||!req.body.password){
   app.patch("/home/:id",authenticateToken, (req, res) => {
     const update = editTask.run(req.body.sub , req.body.cont,req.body.inid);
     if (update.changes === 0){
-      res.status(404).json({message:"task not edited"})
-    }
+     return res.status(404).json({message:"task not edited"})
+    };
     res.json({
       message:"task updated"
+
     })
   })
 

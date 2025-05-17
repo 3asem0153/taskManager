@@ -88,11 +88,10 @@ const [authorized,setAuthorized]=useState(false);
       credentials:'include'
       
 
-    }).then((res)=>res.json()).then((data)=>{setAccessT(data.accessToken)
-      console.log(accessT);});
+    }).then((res)=>res.json()).then((data)=>{setAccessT(data.accessToken)});
     
-    
-  useEffect(() => {
+  useEffect( () => {
+    if(!accessT)return;
     setAuthorized(true);
     fetch(`http://localhost:4000/home/${id}`, {
       headers: {
@@ -103,7 +102,7 @@ const [authorized,setAuthorized]=useState(false);
       console.log(data.tasks);
       setMiniTaskData(data.tasks)
     }).catch((Error) => console.log(`Error:${Error}`))
-  },[])
+  },[accessT])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -209,7 +208,8 @@ const [authorized,setAuthorized]=useState(false);
 
   }
 
-
+  const inid = {inid:edId};
+  
 
   const editTask = async () => {
     const editedData={
@@ -248,11 +248,14 @@ const [authorized,setAuthorized]=useState(false);
   // }, 500);
 
 
+  
   const dltTask = async () => {
-    const inid = {inid:edId};
-    const res = await fetch(`http://localhost:4000/home/${id}`,{
-      method :"delete",
-      headers :{"content-type":"application/json"} ,
+  const res = await fetch(`http://localhost:4000/home/${id}`,{
+    method :"delete",
+    headers :{
+        'authorization':`Bearer ${accessT}`,
+        "content-type":"application/json"} ,
+      credentials:'include',
       body:JSON.stringify(inid) 
     });
     const data = res.json();
@@ -263,7 +266,7 @@ const [authorized,setAuthorized]=useState(false);
     setinContent("");
     setEdId(undefined);
     setMiniTaskClicked(false);
-    
+  }  
 
 
     // setTasks((prevTasks) => prevTasks.map((task) => task.id === edId ? {
@@ -284,7 +287,7 @@ const [authorized,setAuthorized]=useState(false);
 
 
 
-  }
+  
 
 
 
