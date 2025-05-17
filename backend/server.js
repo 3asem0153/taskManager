@@ -9,7 +9,8 @@ const port = 4000;
 const app = express();
 app.use(cors({
   origin:"http://localhost:3000",
-  credentials:true
+  credentials:true,
+  methods:['GET', 'POST', 'PATCH', 'DELETE']
 }));
 app.use(express.json());
 app.use(cookieParser())
@@ -37,7 +38,7 @@ app.post("/sign-up", (req, res) => {
 
     const accessToken=jwt.sign(
       {email:req.body.email},
-      process.env.ACCESS_TOKEN_SECRET,{expiresIn:'30m'} 
+      process.env.ACCESS_TOKEN_SECRET,{expiresIn:'30d'} 
     );
     const refreshToken=jwt.sign(
       {email:req.body.email},
@@ -132,7 +133,7 @@ if(!req.body.email||!req.body.password){
 
     const accessToken=jwt.sign(
       {email:req.body.email},
-      process.env.ACCESS_TOKEN_SECRET,{expiresIn:'30m'} 
+      process.env.ACCESS_TOKEN_SECRET,{expiresIn:'30d'} 
     );
     const refreshToken=jwt.sign(
       {email:req.body.email},
@@ -172,10 +173,14 @@ if(!req.body.email||!req.body.password){
   app.delete("/home/:id",authenticateToken, (req, res) => {
     const result = dlt.run(req.body.inid);
     if (result.changes === 0){
-      res.status(400).json({
+     return res.status(400).json({
         message:"failed to find id"
       })
     }
+    return res.status(200).json({
+      message:"task deleted successfully"
+    })
+    
   })
 
 
@@ -184,9 +189,9 @@ app.listen(port, () => {
 })
 
 app.get("/", (req, res) => {
-  const users = getUsers.all()
+  const tasks = getTasks.all(1)
   res.send(
-    users
+    tasks
   )
 })
 

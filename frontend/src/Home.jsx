@@ -63,7 +63,7 @@ const [authorized,setAuthorized]=useState(false);
     const logOut = async ()=>{
       try{
       const res = await fetch("http://localhost:4000/logout",{
-        method:"post",
+        method:"POST",
         headers:{
           "content-type":"application/json"
         },
@@ -81,7 +81,7 @@ const [authorized,setAuthorized]=useState(false);
 
     const [accessT,setAccessT]=useState(null);
     fetch('http://localhost:4000/refresh',{
-      method:"post",
+      method:"POST",
       headers:{
         "content-type":"application/json"
       },
@@ -100,9 +100,10 @@ const [authorized,setAuthorized]=useState(false);
       }
     }).then((res) => res.json()).then((data) => {
       console.log(data.tasks);
+      console.log(accessT);
       setMiniTaskData(data.tasks)
     }).catch((Error) => console.log(`Error:${Error}`))
-  },[accessT])
+  },[accessT,edId])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -114,7 +115,7 @@ const [authorized,setAuthorized]=useState(false);
 
     try {
       const postRes = await fetch(`http://localhost:4000/home/${id}`, {
-        method: "post",
+        method: "POST",
         headers: {
           "authorization":`Bearer ${accessT}`,
           "content-type": "application/json"
@@ -210,16 +211,18 @@ const [authorized,setAuthorized]=useState(false);
 
   const inid = {inid:edId};
   
-
+  
   const editTask = async () => {
+    console.log(edId)
     const editedData={
       sub:inSubject,
       cont:inContent,
       inid:edId
     }
+  
     try {
       const res = await fetch(`http://localhost:4000/home/${id}`, {
-        method: "patch",
+        method: "PATCH",
         headers: {
           "content-type": "application/json",
           "authorization":`Bearer ${accessT}`
@@ -227,9 +230,14 @@ const [authorized,setAuthorized]=useState(false);
         body: JSON.stringify(editedData)
       });
       const data = await res.json();
-      console.log(data)
+      console.log("fetch edits triggered");
+      setMiniTaskClicked(false);
+      setConClass("container-closed");
+      setinSubject("");
+      setinContent("");
+      setEdId(undefined);
     }
-    catch (err) { console.log(err) }
+    catch (err) { console.log(`couldn't fetch edits ${err}`) }
   }
 
   // setTasks((prevTasks) => {
@@ -250,22 +258,27 @@ const [authorized,setAuthorized]=useState(false);
 
   
   const dltTask = async () => {
+    console.log(edId)
+    try {
   const res = await fetch(`http://localhost:4000/home/${id}`,{
-    method :"delete",
+    method :"DELETE",
     headers :{
         'authorization':`Bearer ${accessT}`,
         "content-type":"application/json"} ,
       credentials:'include',
-      body:JSON.stringify(inid) 
+      body:JSON.stringify({inid:edId}) 
     });
-    const data = res.json();
-    console.log(`data : ${data}`)
-
+    const data = await res.json();
+    console.log(`data : ${data}`);
+    console.log('fetch delete triggered');
     setConClass("container-closed");
     setinSubject("");
     setinContent("");
     setEdId(undefined);
-    setMiniTaskClicked(false);
+    setMiniTaskClicked(false);}
+    catch(err){
+      console.log(`couldn't fetch ${err}`)
+    }
   }  
 
 

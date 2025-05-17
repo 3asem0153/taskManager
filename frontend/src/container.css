@@ -17,6 +17,15 @@
   gap: none;
 }
 
+
+.delete{
+  background-color: #EF4444!important ;
+   color: white !important;
+}
+
+.delete:hover{
+  background-color: #B91C1C!important;
+}
 .container-closed {
   position: absolute;
   top: 50%;
@@ -48,7 +57,7 @@
   to {
     height: 70%;
     width: 25%;
-    background-color: bisque;
+    background-color:#E0E7FF;
 
   }
 }
@@ -65,7 +74,7 @@
     to {
       height: 350px;
       width: 250px;
-      background-color: bisque;
+      background-color:#E0E7FF;
 
     }
   }
@@ -74,7 +83,7 @@
   from {
     height: 70%;
     width: 25%;
-    background-color: bisque;
+    background-color: #E0E7FF;
   }
 
   to {
@@ -92,7 +101,7 @@
     from {
       height: 350px;
       width: 250px;
-      background-color: bisque;
+      background-color:#E0E7FF;
     }
 
     to {
@@ -117,16 +126,8 @@
 
 
 
-.delete {
-  border-radius: 50%;
-  height: 15%;
-  width: 15%;
-  border: solid 1px;
-}
 
-.delete:hover {
-  background-color: rgb(97, 97, 97);
-}
+
 
 input {
   background-color: rgb(255, 255, 255);

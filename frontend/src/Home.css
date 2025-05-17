@@ -1,9 +1,10 @@
 body {
   display: flex;
   justify-content: center;
-  background-color: rgb(255, 255, 255);
-  padding: 20px;
+  background-color: #F9FAFB;
+  padding: 0px;
   z-index: -2;
+
 }
 
 button {
@@ -11,11 +12,19 @@ button {
   width: 125px;
   min-height: 35px;
   border-radius: 10px;
-  background-color: rgb(255, 146, 146);
+  background-color: #6366F1;
   margin: 1px auto;
+  color: white;
 }
 
 button:hover {
-  background-color: rgb(255, 73, 88);
+  background-color:#4F46E5;
 
   }
+
+.nav{
+  width: 100vh;
+  height: 60px;
+  background-color: #5B21B6;
+  margin: 0px 0 20px 0;
+}

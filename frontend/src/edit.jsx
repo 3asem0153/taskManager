@@ -10,15 +10,24 @@ const Edit = ({
 }) => {
 
 
-
+const handleEdits = (e)=>{
+  e.preventDefault();
+  console.log("handle edits triggered")
+  editTask()
+};
+const handleDeletes = (e)=>{
+  e.preventDefault();
+    console.log("handle deletes triggered");
+  deleteTask()
+};
   return <>
 <form>
     <input type="text" placeholder="task subject" onChange={saveSub} value={subject} />
   <textarea placeholder="What are you up to?" onChange={saveContent} value={content} />
 
   <div className="buttons">
-    <button style={ { margin: "20px auto" }} onClick={editTask}>save</button>
-    <button className="delete" onClick={deleteTask}>Delete</button>
+    <button type="button" style={ { margin: "20px auto" }} onClick={handleEdits}>save</button>
+    <button type="button" className="delete" onClick={handleDeletes}>Delete</button>
   </div>
   </form>
 </>

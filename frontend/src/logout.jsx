@@ -2,7 +2,7 @@ import React from "react";
 
 const LogOut=({fetch})=>{
     return <>
-    <button onClick={fetch}>
+    <button className="btn delete" onClick={fetch}>
     Log Out
     </button>
     </>
