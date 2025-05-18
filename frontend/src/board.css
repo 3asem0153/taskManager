@@ -3,12 +3,12 @@
   flex-direction: row;
   flex-wrap: wrap;
   position: absolute;
-  width: 70vw;
+  width: 100vw;
   height: auto;
   border: solid black 2px;
-  top: 80px;
+  top: 120px;
   bottom: 20px;
-  transform: translate(-50%);
+  /* transform: translate(-20%); */
   z-index: 0;
   overflow-y: scroll;
   scrollbar-width: none;
@@ -18,13 +18,15 @@
   .board {
     border: solid green 2px;
     width: 100vw;
-    transform: translate(-35%);
-
+    transform: translate(0%);
+    margin: auto;
+    color: #2D3436;
   }
 }
 
 
 .minitask {
+  color: #2D3436;
   padding: 20px;
   overflow-wrap: break-word;
   margin: 20px;
@@ -51,11 +53,11 @@
     padding: 20px;
     overflow-wrap: break-word;
     margin: 10px;
-    width: 100px;
-    height: 150px;
-    background-color: #EFF4FF ;
+    width: 150px;
+    height: 200px;
+    background-color:#E8ECEF ;
     border-radius: 7px;
-    font-size: 11px;
+    font-size: 15px;
     font-weight: bold;
     transition: all 0.5s ease;
     display: grid;
@@ -63,6 +65,8 @@
     grid-template-rows: 10% 1fr 10%;
     align-items: start;
     gap: 0px;
+    border: solid #CED4DA ;
+    color: #2D3436;
     align-items: start;
     justify-items: start;
     overflow: hidden;

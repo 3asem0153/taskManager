@@ -19,12 +19,12 @@
 
 
 .delete{
-  background-color: #EF4444!important ;
+  background-color: #E17055!important ;
    color: white !important;
 }
 
 .delete:hover{
-  background-color: #B91C1C!important;
+  background-color: #C75B47!important;
 }
 .container-closed {
   position: absolute;
