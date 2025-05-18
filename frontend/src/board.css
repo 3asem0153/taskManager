@@ -14,7 +14,7 @@
   scrollbar-width: none;
   
 }
-@media (max-width:768px) {
+@media (max-width:600px) {
   .board {
     border: solid green 2px;
     width: 100vw;
@@ -27,30 +27,29 @@
 
 .minitask {
   color: #2D3436;
-  padding: 20px;
+  padding: 10px 20px 20px;
   overflow-wrap: break-word;
   margin: 20px;
-  width: 350px;
-  height: 300px;
+  width: 180px;
+  height: 250px;
   background-color:#EFF4FF ;
+  border: solid #CED4DA ;
   border-radius: 7px;
   font-size: 18px;
   font-weight: bold;
   transition: all 0.5s ease;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 10% 1fr 10%;
-  gap: 10px;
+  grid-template-rows: 10% 80% 10%;
   justify-items: start;
   align-items: start;
   overflow: hidden;
-  clip-path: inset(0px 0px 0px 0px round 0px);
 }
 
 
-@media (max-width:768px) {
+@media (max-width:600px) {
   .minitask {
-    padding: 20px;
+    padding: 10px 20px 20px;
     overflow-wrap: break-word;
     margin: 10px;
     width: 150px;
@@ -62,7 +61,7 @@
     transition: all 0.5s ease;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 10% 1fr 10%;
+    grid-template-rows: 10% 80% 10%;
     align-items: start;
     gap: 0px;
     border: solid #CED4DA ;
@@ -91,7 +90,7 @@
 }
 
 .time {
-  color: #ffffff6e;
+  color: #b3ccf7;
   font-weight: 100;
   font-size: 15px;
   font-family: arial;
@@ -102,19 +101,46 @@
 
 }
 
-@media (max-width:768px) {
+@media (max-width:600px) {
   .time {
-    color: #ffffff6e;
-    font-weight: 100;
-    font-size: 12px;
-    font-family: arial;
-    position: relative;
-    align-self: start;
-    justify-self: end;
+  color: #b3ccf7;
+  font-weight: 100;
+  font-size: 15px;
+  font-family: arial;
+  position: relative;
+  align-self: start;
+  justify-self: end;
 
 
   }
 }
 .miniSub {
   align-self: center;
+  font-size: 25px;
+  font-weight: bold;
+  
+}
+@media (max-width:600px) {
+  .miniSub {
+  align-self: center;
+  font-size: 20px;
+  font-weight: bold;
+  }
+}
+
+.minicont{
+  height: 75%;
+  padding: 0 0 15% 0 ;
+  align-self: center;
+  font-size: 18px;
+  font-weight: normal;
+}
+@media (max-width:600px) {
+  .minicont {
+  height: 75%;
+  padding: 0 0 20% 0 ;
+  align-self: center;
+  font-size: 15px;
+  font-weight:normal;
+  }
 }

@@ -318,7 +318,7 @@ const [authorized,setAuthorized]=useState(false);
         subject={task.sub}
         content={task.cont}
         transit={task.transit}
-        time={task.time}
+        time={new Date(task.inid).toLocaleTimeString()}
       />
      ) : null}
      </Board>
